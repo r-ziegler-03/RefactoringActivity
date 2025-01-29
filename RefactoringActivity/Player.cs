@@ -2,9 +2,9 @@
 
 public class Player
 {
-    public int Health;
-    public string CurrentLocation;
-    public List<string> Inventory;
+    public int Health { get; private set; }
+    public string CurrentLocation { get; set; }
+    public List<string> Inventory { get;}
 
     public Player(int health)
     {
@@ -14,6 +14,17 @@ public class Player
     }
 
     public void ShowInventory()
+    {
+        PlayerInventory();
+    }
+
+    public void PoisonDamagePlayer()
+    {
+        Health -= 10;
+    }
+    
+
+    private void PlayerInventory()
     {
         if (Inventory.Count == 0)
         {

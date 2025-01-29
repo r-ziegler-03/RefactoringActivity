@@ -33,17 +33,7 @@ public class World
         Locations.Add("Forest", forest);
         Locations.Add("Cave", cave);
     }
-
-    public bool MovePlayer(Player player, string direction)
-    {
-        if (Locations[player.CurrentLocation].Exits.ContainsKey(direction))
-        {
-            player.CurrentLocation = Locations[player.CurrentLocation].Exits[direction];
-            return true;
-        }
-
-        return false;
-    }
+    
 
     public string GetLocationDescription(string locationName)
     {
@@ -99,6 +89,17 @@ public class World
         return false;
     }
 
+    public bool MovePlayer(Player player, string direction)
+    {
+            if (Locations[player.CurrentLocation].Exits.ContainsKey(direction))
+            {
+                player.CurrentLocation = Locations[player.CurrentLocation].Exits[direction];
+                return true;
+            }
+
+            return false;
+    }
+
     public bool UseItem(Player player, string itemName)
     {
         if (player.Inventory.Contains(itemName))
@@ -106,7 +107,7 @@ public class World
             if (itemName == "potion")
             {
                 Console.WriteLine("Ouch! That tasted like poison!");
-                player.Health -= 10;
+                player.PoisonDamagePlayer();
                 Console.WriteLine($"Your health is now {player.Health}.");
             }
             else
