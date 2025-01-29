@@ -16,6 +16,11 @@ public class GameManager
     {
         WelcomeMessage();
 
+        ExecutePlayerCommands();
+    }
+
+    private void ExecutePlayerCommands()
+    {
         while (IsRunning)
         {
             CurrentPlayerLocation();
