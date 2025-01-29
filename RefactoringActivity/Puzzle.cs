@@ -2,9 +2,9 @@
 
 public class Puzzle
 {
-    public string Name;
-    public string Question;
-    public string Answer;
+    public string Name {get;}
+    public string Question {get;}
+    public string Answer {get;}
     
     public Puzzle(string name, string question, string answer)
     {
