@@ -16,26 +16,46 @@ public class World
         Location forest = new("You are in a dense, dark forest.");
         Location cave = new("You see a dark, ominous cave.");
 
-        start.Exits.Add("north", "Forest");
-        forest.Exits.Add("south", "Start");
-        forest.Exits.Add("east", "Cave");
-        cave.Exits.Add("west", "Forest");
+        AddExits(start, forest, cave);
 
-        start.Items.Add("map");
-        forest.Items.Add("key");
-        forest.Items.Add("potion");
-        cave.Items.Add("sword");
+        AddItems(start, forest, cave);
 
         start.Puzzles.Add(new Puzzle("riddle",
             "What's tall as a house, round as a cup, and all the king's horses can't draw it up?", "well"));
 
+        AddLocations(start, forest, cave);
+    }
+
+    private void AddLocations(Location start, Location forest, Location cave)
+    {
         Locations.Add("Start", start);
         Locations.Add("Forest", forest);
         Locations.Add("Cave", cave);
     }
-    
+
+    private static void AddItems(Location start, Location forest, Location cave)
+    {
+        start.Items.Add("map");
+        forest.Items.Add("key");
+        forest.Items.Add("potion");
+        cave.Items.Add("sword");
+    }
+
+    private static void AddExits(Location start, Location forest, Location cave)
+    {
+        start.Exits.Add("north", "Forest");
+        forest.Exits.Add("south", "Start");
+        forest.Exits.Add("east", "Cave");
+        cave.Exits.Add("west", "Forest");
+    }
+
 
     public string GetLocationDescription(string locationName)
+    {
+        return LocationDescription(locationName);
+    }
+
+    private string LocationDescription(string locationName)
     {
         if (Locations.ContainsKey(locationName)) 
             return Locations[locationName].Description;
@@ -43,6 +63,11 @@ public class World
     }
 
     public string GetLocationDetails(string locationName)
+    {
+        return LocationDetails(locationName);
+    }
+
+    private string LocationDetails(string locationName)
     {
         if (!Locations.ContainsKey(locationName)) 
             return "Unknown location.";
@@ -77,6 +102,11 @@ public class World
 
     public bool TakeItem(Player player, string itemName)
     {
+        return PlayerTakeItem(player, itemName);
+    }
+
+    private bool PlayerTakeItem(Player player, string itemName)
+    {
         Location location = Locations[player.CurrentLocation];
         if (location.Items.Contains(itemName))
         {
@@ -91,16 +121,26 @@ public class World
 
     public bool MovePlayer(Player player, string direction)
     {
-            if (Locations[player.CurrentLocation].Exits.ContainsKey(direction))
-            {
-                player.CurrentLocation = Locations[player.CurrentLocation].Exits[direction];
-                return true;
-            }
+        return MovesPlayer(player, direction);
+    }
 
-            return false;
+    private bool MovesPlayer(Player player, string direction)
+    {
+        if (Locations[player.CurrentLocation].Exits.ContainsKey(direction))
+        {
+            player.CurrentLocation = Locations[player.CurrentLocation].Exits[direction];
+            return true;
+        }
+
+        return false;
     }
 
     public bool UseItem(Player player, string itemName)
+    {
+        return PlayerUseItem(player, itemName);
+    }
+
+    private static bool PlayerUseItem(Player player, string itemName)
     {
         if (player.Inventory.Contains(itemName))
         {
@@ -122,6 +162,11 @@ public class World
     }
 
     public bool SolvePuzzle(Player player, string puzzleName)
+    {
+        return TryToSolvePuzzle(player, puzzleName);
+    }
+
+    private bool TryToSolvePuzzle(Player player, string puzzleName)
     {
         Location location = Locations[player.CurrentLocation];
         Puzzle? puzzle = location.Puzzles.Find(p => p.Name == puzzleName);
